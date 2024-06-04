@@ -1,0 +1,52 @@
+body {
+    background-color: white;
+    color: black;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: black;
+    color: white;
+    
+}
+
+body nav ul{
+    background-color: #333;
+}
+
+body   nav ul li a {
+    color: white;
+}
+
+body nav ul li a:hover {
+    background-color: #111;
+    
+} 
+ body.dark-mode nav ul {
+    background-color: white;
+}
+
+body.dark-mode nav ul li a {
+    color: black;
+}
+
+body.dark-mode nav ul li a:hover {
+    background-color: #444;
+    color: white;
+}
+.box {
+            
+    border-color: black;
+            
+        
+            
+}
+body .dark-mode .box{
+    border-color: white;
+}        
+/* Additional styling for switch button */
+.switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}

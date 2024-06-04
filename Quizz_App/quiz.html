@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Application</title>
+</head>
+<body>
+    <div id="quiz-container"></div>
+    <button id="submitQuiz" style="display:none;">Submit Quiz</button>
+    <button id="leaderboard">Leaderboard</button>
+    <div id="result"></div>
+    <script src="quiz.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    fetch('fetch_questions.php')
+        .then(response => response.json())
+        .then(questions => {
+            displayQuestions(questions);
+            document.getElementById('submitQuiz').style.display = 'block';
+        });
+
+    document.getElementById('submitQuiz').addEventListener('click', submitQuiz);
+
+    fetchLeaderboard(); // Fetch and display the leaderboard
+});
+
+function displayQuestions(questions) {
+    const quizContainer = document.getElementById('quiz-container');
+    questions.forEach(question => {
+        const div = document.createElement('div');
+        div.innerHTML = `<p>${question.question_text}</p>`;
+        question.options.forEach(option => {
+            div.innerHTML += `<label><input type="radio" name="question${question.id}" value="${option.id}">${option.option_text}</label><br>`;
+        });
+        quizContainer.appendChild(div);
+    });
+}
+
+function submitQuiz() {
+    const answers = {};
+    document.querySelectorAll('#quiz-container input[type="radio"]:checked').forEach(input => {
+        const name = input.name;
+        const questionId = name.replace('question', '');
+        answers[questionId] = input.value;
+    });
+
+    fetch('submit_quiz.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(answers)
+    })
+    .then(response => response.text())
+    .then(result => {
+        alert(result); // Show the result
+        fetchLeaderboard(); // Update the leaderboard after submitting
+    });
+}
+
+function fetchLeaderboard() {
+    fetch('fetch_leaderboard.php')
+        .then(response => response.json())
+        .then(scores => {
+            displayLeaderboard(scores);
+        });
+}
+
+function displayLeaderboard(scores) {
+    const leaderboardContainer = document.getElementById('leaderboard');
+    leaderboardContainer.innerHTML = '<h3>Leaderboard</h3>';
+    scores.forEach(score => {
+        leaderboardContainer.innerHTML += `<p>${score.username}: ${score.score}</p>`;
+    });
+}
+
+</script>
+</html>

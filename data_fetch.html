@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.07</title>
+
+<style>
+    button {
+        margin: 10px;
+    }
+</style>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+    <br><br>
+
+    <button id="fetchData">Fetch data</button>
+
+    <div id="outputText"></div>
+   
+    <script>
+ 
+        // Use the fetch() API to retrieve the data from data.json when you click the button
+        // then pass it into the publishData() function
+        //
+        // Upload your solution and the data.json file to a public directory on a live web server
+        // Otherwise you may have file access permissions in the browser
+
+        const outputText = document.getElementById("outputText");
+        const dataButton = document.getElementById("fetchData");
+        
+        function publishData(jsonData) {
+            outputText.innerText = `I am at ${jsonData.studyLevel} in year ${jsonData.year}, studying ${jsonData.module}.`;
+        }
+
+        // Your code goes here
+        dataButton.addEventListener("click", () => {
+            // Use the fetch() API to retrieve data from data.json
+            fetch("data.json")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Call the publishData() function with the retrieved JSON data
+                    publishData(data);
+                })
+        });
+
+    </script>
+
+</body>
+</html>

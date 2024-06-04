@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+select, .question, .answer {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+.questions{
+    cursor:pointer;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+     <div class="section">
+    <h2>Manage Exams</h2>
+    <select id="examList" onchange="loadQuestions(this.value)">
+        <!-- Options will be dynamically loaded here -->
+    </select>
+    <button onclick="showAddExamForm()">Add Exam</button>
+    <button onclick="showEditExamForm()">Edit Exam</button>
+    <button onclick="deleteExam()">Delete Exam</button>
+
+    <!-- Add/Edit Exam Form (hidden initially) -->
+    <div id="examForm" style="display: none;">
+        <input type="text" id="examName" placeholder="Exam Name">
+        <button onclick="addOrUpdateExam()">Submit</button>
+    </div>
+</div>
+
+
+       <div class="section">
+    <h2>Manage Questions</h2>
+    <div id="questionManagement">
+        <button onclick="showAddQuestionForm()">Add Question</button>
+        <button onclick="showEditQuestionForm()">Edit Question</button>
+        <button onclick="deleteQuestion()">Delete Question</button>
+
+        <!-- Add/Edit Question Form (hidden initially) -->
+        <div id="questionForm" style="display: none;">
+            <textarea id="questionText" placeholder="Question Text"></textarea>
+            <button onclick="addOrUpdateQuestion()">Submit</button>
+        </div>
+    </div>
+    <div id="questionList" class="questions">
+        <!-- Questions will be dynamically loaded here -->
+    </div>
+</div>
+
+        <div class="section">
+    <h2>Manage Answers</h2>
+    <div id="answerManagement">
+        <button onclick="showAddAnswerForm()">Add Answer</button>
+        <button onclick="showEditAnswerForm()">Edit Answer</button>
+        <button onclick="deleteAnswer()">Delete Answer</button>
+
+        <!-- Add/Edit Answer Form (hidden initially) -->
+        <div id="answerForm" style="display: none;">
+            <textarea id="answerText" placeholder="Answer Text"></textarea>
+            <label>
+                <input type="checkbox" id="isCorrect"> Correct Answer
+            </label>
+            <button onclick="addOrUpdateAnswer()">Submit</button>
+        </div>
+    </div>
+    <div id="answerList">
+        <!-- Answers will be dynamically loaded here -->
+    </div>
+</div>
+    </div>
+
+    <script>
+        function loadExams() {
+    fetch('load_exams.php')
+        .then(response => response.json())
+        .then(data => {
+            const examList = document.getElementById('examList');
+            examList.innerHTML = data.map(exam => `<option value="${exam.id}">${exam.name}</option>`).join('');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function loadQuestions(examId) {
+    fetch(`load_questions.php?examId=${examId}`)
+        .then(response => response.json())
+        .then(data => {
+            const questionList = document.getElementById('questionList');
+            questionList.innerHTML = data.map(question => 
+                `<div class="question">
+                    <input type="radio" name="selectedQuestion" value="${question.id}" onclick="selectQuestion(${question.id})">
+                    ${question.text}
+                </div>`
+            ).join('');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function selectQuestion(questionId) {
+    window.currentQuestionId = questionId;
+    loadAnswers(questionId);
+}
+
+
+
+
+
+function loadAnswers(questionId) {
+    const answerList = document.getElementById('answerList');
+    answerList.innerHTML = ''; // Clear existing answers
+
+    fetch(`load_answers.php?questionId=${questionId}`)
+        .then(response => response.json())
+        .then(data => {
+            answerList.innerHTML = data.map(answer => 
+                `<div class="answer">
+                    <input type="radio" name="selectedAnswer" value="${answer.id}" ${answer.correct ? 'data-is-correct="true"' : ''}>
+                    ${answer.text} 
+                    ${answer.correct ? '<span>(Correct)</span>' : ''}
+                </div>`
+            ).join('');
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadExams();
+});
+
+    </script>
+    <script>
+        // CRUD exams
+   function showAddExamForm() {
+    document.getElementById('examForm').style.display = 'block';
+    document.getElementById('examName').value = '';
+    window.currentExamId = null;
+}
+
+function showEditExamForm() {
+    var examId = document.getElementById('examList').value;
+    if (!examId) return alert('Please select an exam to edit.');
+
+    // Assuming the exam name is directly available in the dropdown (simplified for demonstration)
+    var examName = document.getElementById('examList').options[document.getElementById('examList').selectedIndex].text;
+    document.getElementById('examForm').style.display = 'block';
+    document.getElementById('examName').value = examName;
+    window.currentExamId = examId;
+}
+
+function addOrUpdateExam() {
+    var name = document.getElementById('examName').value;
+    var examId = window.currentExamId;
+
+    console.log('Adding/Updating Exam', { name, examId }); // Debugging line
+
+    var formData = new FormData();
+    formData.append('examName', name);
+    if (examId) {
+        formData.append('examId', examId);
+    }
+
+    var url = examId ? 'update_exam.php' : 'add_exam.php';
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => response.text())
+    .then(result => {
+        console.log('Server Response:', result); // Debugging line
+        alert(result);
+        loadExams();
+        document.getElementById('examForm').style.display = 'none';
+        window.currentExamId = null;
+    }).catch(error => console.error('Error:', error));
+}
+
+function deleteExam() {
+    var examId = document.getElementById('examList').value;
+    if (!examId) return alert('Please select an exam to delete.');
+
+    if (confirm('Are you sure you want to delete this exam?')) {
+        var formData = new FormData();
+        formData.append('examId', examId);
+
+        fetch('delete_exam.php', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+        .then(result => {
+            alert(result);
+            loadExams();
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
+// CRUD QUestions
+function showAddQuestionForm() {
+    document.getElementById('questionForm').style.display = 'block';
+    document.getElementById('questionText').value = '';
+    window.currentQuestionId = null;
+}
+
+function showEditQuestionForm() {
+    var selectedQuestion = document.querySelector('input[name="selectedQuestion"]:checked');
+    if (!selectedQuestion) return alert('Please select a question to edit.');
+
+    var questionId = selectedQuestion.value;
+    document.getElementById('questionForm').style.display = 'block';
+    // Assuming the question text is directly available (simplified for demonstration)
+    document.getElementById('questionText').value = selectedQuestion.nextSibling.textContent.trim();
+    window.currentQuestionId = questionId;
+}
+
+
+function addOrUpdateQuestion() {
+    var text = document.getElementById('questionText').value;
+    var questionId = window.currentQuestionId;
+    var examId = document.getElementById('examList').value;
+
+    var formData = new FormData();
+    formData.append('questionText', text);
+    formData.append('examId', examId);
+    if (questionId) {
+        formData.append('questionId', questionId);
+    }
+
+    var url = questionId ? 'update_question.php' : 'add_question.php';
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => response.text())
+    .then(result => {
+        alert(result);
+        loadQuestions(examId);
+        document.getElementById('questionForm').style.display = 'none';
+        window.currentQuestionId = null;
+    }).catch(error => console.error('Error:', error));
+}
+
+function deleteQuestion() {
+    var selectedQuestion = document.querySelector('input[name="selectedQuestion"]:checked');
+    if (!selectedQuestion) return alert('Please select a question to delete.');
+
+    var questionId = selectedQuestion.value;
+    var examId = document.getElementById('examList').value;
+
+    if (confirm('Are you sure you want to delete this question?')) {
+        var formData = new FormData();
+        formData.append('questionId', questionId);
+
+        fetch('delete_question.php', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+        .then(result => {
+            alert(result);
+            loadQuestions(examId);
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
+//CRUD Answers
+// Add these functions to your existing <script> tag
+
+function showAddAnswerForm() {
+    document.getElementById('answerForm').style.display = 'block';
+    document.getElementById('answerText').value = '';
+    document.getElementById('isCorrect').checked = false;
+    window.currentAnswerId = null;
+}
+
+
+function showEditAnswerForm() {
+    var selectedAnswer = document.querySelector('input[name="selectedAnswer"]:checked');
+    if (!selectedAnswer) return alert('Please select an answer to edit.');
+
+    var answerId = selectedAnswer.value;
+    document.getElementById('answerForm').style.display = 'block';
+    document.getElementById('answerText').value = selectedAnswer.nextSibling.textContent.trim();
+    document.getElementById('isCorrect').checked = selectedAnswer.dataset.isCorrect === 'true';
+    window.currentAnswerId = answerId;
+}
+
+function addOrUpdateAnswer() {
+    var text = document.getElementById('answerText').value;
+    var isCorrect = document.getElementById('isCorrect').checked;
+    var questionId = window.currentQuestionId;
+    var answerId = window.currentAnswerId;// Ensure this is set when an answer is selected
+
+    if (!questionId) {
+        alert("No question selected");
+        return;
+    }
+    if (!answerId) {
+        alert("No answer selected");
+        return;
+    }
+
+    var formData = new FormData();
+    formData.append('answerText', text);
+    formData.append('isCorrect', isCorrect);
+    formData.append('answerId', answerId);
+
+    var url = 'update_answer.php';
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => response.text())
+    .then(result => {
+        alert(result);
+        loadAnswers(questionId);
+        document.getElementById('answerForm').style.display = 'none';
+        window.currentAnswerId = null;
+    }).catch(error => console.error('Error:', error));
+}
+
+
+
+function deleteAnswer() {
+    var selectedAnswer = document.querySelector('input[name="selectedAnswer"]:checked');
+    if (!selectedAnswer) return alert('Please select an answer to delete.');
+
+    var answerId = selectedAnswer.value;
+    var questionId = window.currentQuestionId;
+
+    if (confirm('Are you sure you want to delete this answer?')) {
+        var formData = new FormData();
+        formData.append('answerId', answerId);
+
+        fetch('delete_answer.php', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+        .then(result => {
+            alert(result);
+            loadAnswers(questionId);
+        }).catch(error => console.error('Error:', error));
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadExams();
+});
+
+    </script>
+</body>
+</html>

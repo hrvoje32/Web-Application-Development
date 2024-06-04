@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.01</title>
+
+    <script>
+    let animals = [];
+
+    const animal1 = {
+        species: "dog",
+        name: "Bruno",
+        age: 7
+    };
+
+    const animal2 = {
+        species: "bearded dragon",
+        name: "Rex",
+        age: 2
+    };
+
+    const animal3 = {
+        species: "cat",
+        name: "Spot",
+        age: 4
+    };
+
+    animals.push(animal1, animal2, animal3);
+
+    // Use a forEach loop on the animals array to print "[name] is a [species]." to the console for each animal.
+    // Expected result:
+    //      Bruno is a dog.
+    //      Rex is a bearded dragon.
+    //      Spot is a cat.
+
+    animals.forEach(animal => {
+        console.log(`${animal.name} is a ${animal.species}.`);
+    });
+</script>
+
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+</body>
+</html>
+
+
+
+
+<!--Task 2-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.02</title>
+
+    <script>
+
+        let animals = [];
+    
+        const animal1 = {
+            species: "dog",
+            name: "Bruno",
+            age: 7
+        };
+    
+        const animal2 = {
+            species: "bearded dragon",
+            name: "Rex",
+            age: 2
+        };
+    
+        const animal3 = {
+            species: "cat",
+            name: "Spot",
+            age: 4
+        };
+    
+        animals.push(animal1, animal2, animal3);
+    
+        // Initialize a variable to store the total age.
+        let totalAge = 0;
+    
+        // Use a for...of loop to print "[name] is [age] years old." for each animal and calculate the total age.
+        // Expected result:
+        //      Bruno is 7 years old.
+        //      Rex is 2 years old.
+        //      Spot is 4 years old.
+        //      The animals have been alive for a total of [totalAge] years between them!
+        for (const animal of animals) {
+            console.log(`${animal.name} is ${animal.age} years old.`);
+            totalAge += animal.age;
+        }
+    
+        // Print the total age.
+        console.log(`The animals have been alive for a total of ${totalAge} years between them!`);
+    
+    </script>
+    
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+</body>
+</html>
+
+
+
+<!--Task 3-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.03</title>
+
+    <script>
+
+class Animal {
+    constructor(species, name, age) {
+        this.species = species;
+        this.name = name;
+        this.age = age;
+    }
+
+    
+    getSpecies() {
+        return this.species;
+    }
+
+   
+    setSpecies(species) {
+        this.species = species;
+    }
+
+    
+    getName() {
+        return this.name;
+    }
+
+    
+    setName(name) {
+        this.name = name;
+    }
+
+    
+    getAge() {
+        return this.age;
+    }
+
+
+    setAge(age) {
+        this.age = age;
+    }
+
+
+
+}
+
+
+        // Rewrite the object literals commented out above as instances of a class "Animal"
+        // Use a constructor/builder pattern and add accessor/mutator (getter/setter) builerplate code
+        // similar to the syntax you would have used in Java
+
+        let animals = [];
+
+        
+        // Your code goes here
+
+
+        const animal1 = new Animal("dog", "Bruno", 7);
+        const animal2 = new Animal("bearded dragon", "Rex", 2);
+        const animal3 = new Animal("cat", "Spot", 4);
+
+        animals.push(animal1, animal2, animal3);
+
+        animals.forEach((animal) => console.log(animal));
+
+    </script>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+</body>
+</html>
+
+<!--Task 4-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.04</title>
+
+    <script>
+
+        const animal1 = {
+            species : "dog",
+            name : "Bruno",
+            age : 7
+        };
+
+        const animal2 = {
+            species : "bearded dragon",
+            name : "Rex",
+            age : 2
+        };
+
+        const animal3 = {
+            species : "cat",
+            name : "Spot",
+            age : 4
+        };
+
+        let animals = [];
+
+        animals.push(animal1, animal2, animal3);
+
+    </script>
+
+<style>
+    table {
+        text-align: left;
+    }
+
+    th, td {
+        padding:10px;
+        border:1px solid black;
+    }
+</style>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+    <br><br>
+
+    <table id="animal_table">
+        <tr>
+            <th>Species</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+    </table>
+
+    <script>
+
+        
+        let animals = [
+            { species: "dog", name: "Bruno", age: 7 },
+            { species: "bearded dragon", name: "Rex", age: 2 },
+            { species: "cat", name: "Spot", age: 4 }
+        ];
+
+        
+        function addRowsToTable() {
+            let table = document.querySelector("#animal_table");
+
+            animals.forEach(animal => {
+                let row = table.insertRow();
+                row.innerHTML = `
+                    <td>${animal.species}</td>
+                    <td>${animal.name}</td>
+                    <td>${animal.age}</td>
+                `;
+            });
+        }
+
+        
+        addRowsToTable();
+
+    </script>
+</body>
+
+</html>
+
+<!--Task 5-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.04</title>
+
+    <script>
+
+        const animal1 = {
+            species : "dog",
+            name : "Bruno",
+            age : 7
+        };
+
+        const animal2 = {
+            species : "bearded dragon",
+            name : "Rex",
+            age : 2
+        };
+
+        const animal3 = {
+            species : "cat",
+            name : "Spot",
+            age : 4
+        };
+
+        let animals = [];
+
+        animals.push(animal1, animal2, animal3);
+
+    </script>
+
+<style>
+    table {
+        text-align: left;
+    }
+
+    th, td {
+        padding:10px;
+        border:1px solid black;
+    }
+</style>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+    <br><br>
+
+    <table id="animal_table">
+        <tr>
+            <th>Species</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+    </table>
+
+    <script>
+
+        // In this script block add JavaScript that will add a row to the HTML table for each animal
+        // in the animals array.
+        //
+        // This time use only getElementByID(), createElement, innerText and appendChild
+
+        const animalTable = document.getElementById("animal_table");
+
+        animals.forEach((animal) => {
+            let newRow = document.createElement("tr");
+            let speciesCell = document.createElement("td");
+            let nameCell = document.createElement("td");
+            let ageCell = document.createElement("td");
+
+            speciesCell.innerText = animal.species;
+            nameCell.innerText = animal.name;
+            ageCell.innerText = animal.age;
+
+            newRow.appendChild(speciesCell);
+            newRow.appendChild(nameCell);
+            newRow.appendChild(ageCell);
+
+            animalTable.appendChild(newRow);
+        });
+
+
+    </script>
+
+</body>
+</html>
+
+
+
+<!--Task 6-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.06</title>
+
+<style>
+    #colouredDiv {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+    }
+    button {
+        margin: 10px;
+    }
+</style>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+    <br><br>
+
+    <div id="colouredDiv"></div>
+
+    <button id="red">Red</button>
+    <button id="green">Green</button>
+    <button id="blue">Blue</button>
+    
+
+    <script>
+        // Add event listeners to the buttons to change the background colour of the div
+        // to match the name of the button when you click on them
+
+        // Your code goes here
+        const colouredDiv = document.getElementById("colouredDiv");
+        const redButton = document.getElementById("red");
+        const greenButton = document.getElementById("green");
+        const blueButton = document.getElementById("blue");
+
+        redButton.addEventListener("click", () => {
+        colouredDiv.style.backgroundColor = "red";
+        });
+
+        greenButton.addEventListener("click", () => {
+        colouredDiv.style.backgroundColor = "green";
+        });
+
+        blueButton.addEventListener("click", () => {
+        colouredDiv.style.backgroundColor = "blue";
+        });
+
+    </script>
+
+</body>
+</html>
+
+
+<!--Task 7-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.07</title>
+
+<style>
+    button {
+        margin: 10px;
+    }
+</style>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+    <br><br>
+
+    <button id="fetchData">Fetch data</button>
+
+    <div id="outputText"></div>
+   
+    <script>
+ 
+        // Use the fetch() API to retrieve the data from data.json when you click the button
+        // then pass it into the publishData() function
+        //
+        // Upload your solution and the data.json file to a public directory on a live web server
+        // Otherwise you may have file access permissions in the browser
+
+        const outputText = document.getElementById("outputText");
+        const dataButton = document.getElementById("fetchData");
+        
+        function publishData(jsonData) {
+            outputText.innerText = `I am at ${jsonData.studyLevel}, studying ${jsonData.module} in year ${jsonData.year}.`;
+        }
+
+        // Your code goes here
+        dataButton.addEventListener("click", () => {
+            // Use the fetch() API to retrieve data from data.json
+            fetch("data.json")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Call the publishData() function with the retrieved JSON data
+                    publishData(data);
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+                });
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem 5.04</title>
+
+    <style>
+        table {
+            text-align: left;
+        }
+
+        th, td {
+            padding:10px;
+            border:1px solid black;
+        }
+    </style>
+
+</head>
+<body>
+    You can run this script by opening this web page in a browser.
+    <br><br>
+    To view the console output, you can access the dev tools by pressing F12 in most modern browsers (Firefox, Edge, Chrome).
+    <br><br>
+
+    <table id="animal_table">
+        <tr>
+            <th>Species</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+    </table>
+
+    <script>
+
+        const animal1 = {
+            species : "dog",
+            name : "Bruno",
+            age : 7
+        };
+
+        const animal2 = {
+            species : "bearded dragon",
+            name : "Rex",
+            age : 2
+        };
+
+        const animal3 = {
+            species : "cat",
+            name : "Spot",
+            age : 4
+        };
+
+        let animals = [];
+
+        animals.push(animal1, animal2, animal3);
+
+        function addRowsToTable() {
+            let table = document.querySelector("#animal_table");
+
+            animals.forEach(animal => {
+                let row = table.insertRow();
+                row.innerHTML = `
+                    <td>${animal.species}</td>
+                    <td>${animal.name}</td>
+                    <td>${animal.age}</td>
+                `;
+            });
+        }
+
+        addRowsToTable();
+
+    </script>
+</body>
+</html>
+
+
